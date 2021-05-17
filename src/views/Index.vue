@@ -8,7 +8,7 @@
     >
     <TournamentGrid
       :item-width="itemWidth"
-      :count="Number(count)"
+      :count="calculateCount"
     />
   </div>
 </template>
@@ -23,13 +23,16 @@ export default {
   },
   data() {
     return {
-      count: 2,
+      count: 8,
       innerWidth: window.innerWidth,
     };
   },
   computed: {
     itemWidth() {
-      return `${(this.innerWidth - (this.count - 1) * 50 - 40) / this.count}px`;
+      return `${(this.innerWidth - (this.calculateCount - 1) * 50 - 40) / this.calculateCount}px`;
+    },
+    calculateCount() {
+      return Number(Math.log2(this.count)) + 1;
     },
   },
   created() {

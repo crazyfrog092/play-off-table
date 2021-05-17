@@ -1,6 +1,6 @@
 <template>
   <div class="pair">
-    <template v-if="count > 1">
+    <template v-if="count > 1 && Number.isInteger(count)">
       <div class="pair__wrap">
         <div class="pair__item">
           <PairOfElements
@@ -37,8 +37,6 @@
     <template v-else-if="count === 1">
       <GridItem :width="itemWidth" />
     </template>
-
-    <template v-else-if="count === 0" />
 
     <template v-else>
       Число должно быть 2, 4, 8, 16 и т.д.
