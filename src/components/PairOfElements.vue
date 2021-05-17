@@ -6,6 +6,7 @@
           <PairOfElements
             :item-width="itemWidth"
             :count="localCount"
+            :data="firstArray"
           />
           <div class="line">
             <div class="line__horizontal" />
@@ -16,6 +17,7 @@
           <PairOfElements
             :item-width="itemWidth"
             :count="localCount"
+            :data="secondArray"
           />
           <div class="line">
             <div class="line__horizontal" />
@@ -29,13 +31,18 @@
             <div class="line__vertical" />
             <div class="line__horizontal" />
           </div>
-          <GridItem :width="itemWidth" />
+          <GridItem
+            :width="itemWidth"
+          />
         </div>
       </div>
     </template>
 
     <template v-else-if="count === 1">
-      <GridItem :width="itemWidth" />
+      <GridItem
+        :width="itemWidth"
+        :data="(localCount === 0 && data) ? data[0] : null"
+      />
     </template>
 
     <template v-else>
@@ -64,10 +71,32 @@ export default {
       type: Number,
       default: 2,
     },
+    data: {
+      type: Array,
+      default: null,
+    },
+  },
+  data() {
+    return {
+      firstArray: null,
+      secondArray: null,
+    };
   },
   computed: {
     localCount() {
       return this.count - 1;
+    },
+  },
+  watch: {
+    data(value) {
+      if (value && this.count > 1) {
+        const data = value.concat();
+        this.secondArray = data.splice(data.length / 2);
+        this.firstArray = data;
+      } else {
+        this.secondArray = null;
+        this.firstArray = null;
+      }
     },
   },
 };

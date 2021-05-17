@@ -1,0 +1,2 @@
+export const GET_PLAYERS = 'GET_PLAYERS';
+export const SEND_TOURNAMENT_GRID = 'SEND_TOURNAMENT_GRID';
