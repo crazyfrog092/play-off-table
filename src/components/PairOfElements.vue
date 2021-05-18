@@ -40,6 +40,7 @@
       <GridItem
         :width="itemWidth"
         :data="(localCount === 0 && data) ? data[0] : null"
+        droppable
       />
     </template>
 

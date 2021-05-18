@@ -6,15 +6,7 @@
       type="number"
       class="play-off__input"
     >
-    <div class="play-off__players">
-      <div
-        v-for="player in players"
-        :key="player.id"
-        class="play-off__player"
-      >
-        {{ player.name }}
-      </div>
-    </div>
+    <DragArray />
     <button
       class="play-off__random-btn"
       :disabled="!(calculateCount >= 1 && Number.isInteger(calculateCount))"
@@ -22,19 +14,10 @@
     >
       Random distribution
     </button>
-    <!-- <div class="play-off__players">
-      <div
-        v-for="player in gridData"
-        :key="player.id"
-        class="play-off__player"
-      >
-        {{ player.name }}
-      </div>
-    </div> -->
     <TournamentGrid
       :item-width="itemWidth"
       :count="calculateCount"
-      :data="gridData.length ? gridData : null"
+      :data="gridData"
     />
   </div>
 </template>
@@ -42,6 +25,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import TournamentGrid from '@/components/PairOfElements.vue';
+import DragArray from '@/components/DragArray.vue';
 
 import { GET_PLAYERS } from '@/store/consts';
 
@@ -49,17 +33,18 @@ export default {
   name: 'Index',
   components: {
     TournamentGrid,
+    DragArray,
   },
   data() {
     return {
       count: 8,
       innerWidth: window.innerWidth,
-      gridData: [],
     };
   },
   computed: {
     ...mapGetters({
       players: 'players',
+      gridData: 'gridData',
     }),
     itemWidth() {
       return `${(this.innerWidth - (this.calculateCount - 1) * 50 - 40) / this.calculateCount}px`;
@@ -93,16 +78,19 @@ export default {
     async randomDistribution() {
       await this.reset();
       let players = this.players.concat();
+      const gridData = [];
       for (let i = this.count; i > 0; i -= 1) {
         const randomPlayer = players[Math.floor(Math.random() * players.length)];
-        this.gridData.push(randomPlayer);
+        randomPlayer.number = this.count - i;
+        gridData.push(randomPlayer);
         players = players.filter((player) => player.id !== randomPlayer.id);
       }
+      this.$store.commit('setGridData', gridData);
       this.$store.commit('setPlayers', players);
     },
     reset() {
       this.$store.dispatch(`${GET_PLAYERS}`);
-      this.gridData = [];
+      this.$store.commit('setGridData', null);
     },
   },
 };
@@ -115,19 +103,6 @@ export default {
   &__input {
     max-width: 250px;
     width: 100%;
-  }
-  &__players {
-    display: flex;
-    flex-wrap: wrap;
-  }
-  &__player {
-    padding: 3px 5px;
-    margin: 2px 5px;
-    cursor: pointer;
-    font-size: 18px;
-    &:hover {
-      font-weight: bold;
-    }
   }
   &__random-btn {
     width: 170px;

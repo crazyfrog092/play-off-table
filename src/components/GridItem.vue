@@ -1,7 +1,9 @@
 <template>
   <div
-    class="grid-item"
+    :data-number="data ? data.number: ''"
+    :class="{ 'droppable': droppable }"
     :style="`width:${width}`"
+    class="grid-item"
   >
     {{ data ? data.name : '' }}
   </div>
@@ -18,6 +20,10 @@ export default {
     data: {
       type: Object,
       default: null,
+    },
+    droppable: {
+      type: Boolean,
+      default: false,
     },
   },
 };
