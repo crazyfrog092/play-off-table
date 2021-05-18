@@ -31,9 +31,7 @@
             <div class="line__vertical" />
             <div class="line__horizontal" />
           </div>
-          <GridItem
-            :width="itemWidth"
-          />
+          <GridItem :width="itemWidth" />
         </div>
       </div>
     </template>
