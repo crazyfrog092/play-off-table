@@ -19,6 +19,12 @@
       :count="calculateCount"
       :data="gridData"
     />
+    <!-- <div>
+      Players: {{ players }}
+    </div>
+    <div>
+      GridData: {{ gridData }}
+    </div> -->
   </div>
 </template>
 
@@ -54,11 +60,13 @@ export default {
     },
   },
   watch: {
-    count() {
-      this.reset();
+    async count() {
+      await this.reset();
+      this.recalculatingInOrder();
     },
   },
   async mounted() {
+    this.recalculatingInOrder();
     const request = [
       this.$store.dispatch(`${GET_PLAYERS}`),
     ];
@@ -75,13 +83,20 @@ export default {
     });
   },
   methods: {
+    recalculatingInOrder() {
+      const boxes = document.querySelectorAll('div[data-round="1"]'); // только для первого раунда
+      boxes.forEach((box, i) => {
+        // eslint-disable-next-line
+        box.dataset.number = i;
+      });
+      this.$store.commit('setGridData', Array(boxes.length));
+    },
     async randomDistribution() {
       await this.reset();
       let players = this.players.concat();
       const gridData = [];
       for (let i = this.count; i > 0; i -= 1) {
         const randomPlayer = players[Math.floor(Math.random() * players.length)];
-        randomPlayer.number = this.count - i;
         gridData.push(randomPlayer);
         players = players.filter((player) => player.id !== randomPlayer.id);
       }

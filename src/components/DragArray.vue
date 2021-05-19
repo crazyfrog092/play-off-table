@@ -1,8 +1,10 @@
 <template>
   <div class="players">
     <div
-      v-for="player in players"
-      :key="player.id"
+      v-for="(player, i) in players"
+      :key="i"
+      :data-id="player.id"
+      :data-name="player.name"
       class="players__item draggable"
     >
       {{ player.name }}

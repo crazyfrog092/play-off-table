@@ -1,6 +1,8 @@
 <template>
   <div
-    :data-number="data ? data.number: ''"
+    :data-id="data ? data.id: ''"
+    :data-name="data ? data.name: ''"
+    :data-round="round"
     :class="{ 'droppable': droppable }"
     :style="`width:${width}`"
     class="grid-item"
@@ -24,6 +26,10 @@ export default {
     droppable: {
       type: Boolean,
       default: false,
+    },
+    round: {
+      type: Number,
+      required: true,
     },
   },
 };

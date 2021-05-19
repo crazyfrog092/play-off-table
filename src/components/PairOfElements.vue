@@ -31,7 +31,10 @@
             <div class="line__vertical" />
             <div class="line__horizontal" />
           </div>
-          <GridItem :width="itemWidth" />
+          <GridItem
+            :width="itemWidth"
+            :round="count"
+          />
         </div>
       </div>
     </template>
@@ -40,6 +43,7 @@
       <GridItem
         :width="itemWidth"
         :data="(localCount === 0 && data) ? data[0] : null"
+        :round="count"
         droppable
       />
     </template>

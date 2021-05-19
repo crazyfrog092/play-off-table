@@ -1,4 +1,4 @@
 export default () => ({
   players: [],
-  gridData: null,
+  gridData: [],
 });
